@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <string name="app_name">Social App</string>
+    <string name="app_name">Kodex Social App</string>
     <string name="label_create_post_activity">Create post</string>
     <string name="label_post_detail_activity">Post detail</string>
     <string name="label_image_detail_activity">Image</string>
@@ -188,6 +188,8 @@
     <!--Notifications-->
     <string name="new_like_channel_name">New Like</string>
     <string name="new_comment_channel_name">New Comment</string>
+    <string name="default_notification_channel_id">kodex_social_app</string>
+
 
 
 </resources>

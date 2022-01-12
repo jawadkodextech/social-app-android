@@ -20,8 +20,9 @@ import android.content.Context;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.iid.FirebaseInstanceId;
+
 import com.rozdoum.socialcomponents.main.editProfile.EditProfilePresenter;
+import com.rozdoum.socialcomponents.services.FirebaseInstanceId;
 import com.rozdoum.socialcomponents.utils.PreferencesUtil;
 
 /**

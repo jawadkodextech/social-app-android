@@ -1,7 +1,8 @@
 const functions = require('firebase-functions');
 
 const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
+//admin.initializeApp(functions.config().firebase);
+admin.initializeApp();
 
 const actionTypeNewLike = "new_like";
 const actionTypeNewComment = "new_comment";
@@ -22,7 +23,7 @@ const THUMB_SMALL_SIZE = 100; //px
 const THUMB_MEDIUM_DIR = "medium";
 const THUMB_SMALL_DIR = "small";
 
-const gcs = require('@google-cloud/storage')();
+const gcs = require('@google-cloud/storage');
 const path = require('path');
 const sharp = require('sharp');
 const os = require('os');
@@ -39,7 +40,10 @@ exports.pushNotificationLikes = functions.database.ref('/post-likes/{postId}/{au
     const getPostTask = admin.database().ref(`/posts/${postId}`).once('value');
 
     return getPostTask.then(post => {
-
+        if(post.val().authorId != null){
+            console.log('User liked own post');
+            return 'User liked own post';
+        }
         if (likeAuthorId === post.val().authorId) {
             console.log('User liked own post');
             return 'User liked own post';

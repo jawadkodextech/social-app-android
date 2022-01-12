@@ -53,7 +53,7 @@ public abstract class BaseCreatePostActivity<V extends BaseCreatePostView, P ext
 
         imageView = findViewById(R.id.imageView);
 
-        imageView.setOnClickListener(v -> onSelectImageClick(v));
+        imageView.setOnClickListener(this::onSelectImageClick);
 
         titleEditText.setOnTouchListener((v, event) -> {
             if (titleEditText.hasFocus() && titleEditText.getError() != null) {

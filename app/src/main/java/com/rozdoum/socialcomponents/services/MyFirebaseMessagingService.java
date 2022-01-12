@@ -25,10 +25,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +38,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.rozdoum.socialcomponents.Constants;
 import com.rozdoum.socialcomponents.R;
+import com.rozdoum.socialcomponents.main.interactors.ProfileInteractor;
 import com.rozdoum.socialcomponents.main.main.MainActivity;
 import com.rozdoum.socialcomponents.main.postDetails.PostDetailsActivity;
 import com.rozdoum.socialcomponents.managers.PostManager;
@@ -63,6 +66,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String ACTION_TYPE_NEW_LIKE = "new_like";
     private static final String ACTION_TYPE_NEW_COMMENT = "new_comment";
     private static final String ACTION_TYPE_NEW_POST = "new_post";
+
+    private void sendRegistrationToServer(String token) {
+        ProfileInteractor.getInstance(getApplicationContext()).updateRegistrationToken(token);
+    }
+
+    @Override
+    public void onNewToken(@NonNull String s) {
+        super.onNewToken(s);
+        FirebaseInstanceId.getInstance().setToken(s);
+        LogUtil.logDebug(TAG, "Refreshed token: " + s);
+
+        // If you want to send messages to this application instance or
+        // manage this apps subscriptions on the server side, send the
+        // Instance ID token to your app server.
+        sendRegistrationToServer(s);
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

@@ -18,7 +18,9 @@
 package com.rozdoum.socialcomponents.adapters.holders;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -40,8 +42,9 @@ import com.rozdoum.socialcomponents.model.Post;
 import com.rozdoum.socialcomponents.model.Profile;
 import com.rozdoum.socialcomponents.utils.FormatterUtil;
 import com.rozdoum.socialcomponents.utils.GlideApp;
+import com.rozdoum.socialcomponents.utils.ImageExtensions;
 import com.rozdoum.socialcomponents.utils.ImageUtil;
-import com.rozdoum.socialcomponents.utils.Utils;
+import com.rozdoum.socialcomponents.utils.Placeholders;
 
 /**
  * Created by alexey on 27.12.16.
@@ -129,9 +132,17 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
         CharSequence date = FormatterUtil.getRelativeTimeSpanStringShort(context, post.getCreatedDate());
         dateTextView.setText(date);
-
+//        postImageView.loadImage
+//        ImageExtensions.INSTANCE.loadImage(postImageView,
+//                post.getImageTitle(),
+//                Placeholders.DEFAULT,
+//                false,
+//                false,
+//                false,
+//                0
+//        );
         postManager.loadImageMediumSize(GlideApp.with(baseActivity), post.getImageTitle(), postImageView);
-
+//        postManager.loadImage
         if (post.getAuthorId() != null) {
             profileManager.getProfileSingleValue(post.getAuthorId(), createProfileChangeListener(authorImageView));
         }

@@ -19,9 +19,9 @@ package com.rozdoum.socialcomponents.utils;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
 import com.facebook.FacebookSdk;
@@ -35,8 +35,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserInfo;
-import com.google.firebase.iid.FirebaseInstanceId;
+
 import com.rozdoum.socialcomponents.main.interactors.ProfileInteractor;
+import com.rozdoum.socialcomponents.services.FirebaseInstanceId;
 
 public class LogoutHelper {
 

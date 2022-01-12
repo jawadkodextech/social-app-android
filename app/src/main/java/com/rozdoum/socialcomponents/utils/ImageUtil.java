@@ -19,7 +19,9 @@ package com.rozdoum.socialcomponents.utils;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
+
 import android.widget.ImageView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -45,11 +47,11 @@ public class ImageUtil {
     }
 
     public static String generatePostImageTitle(String parentId) {
-        return generateImageTitle(UploadImagePrefix.POST, parentId) + "_" + new Date().getTime();
+        return generateImageTitle(UploadImagePrefix.POST, parentId) + "_" + new Date().getTime() + ".png";
     }
 
     public static void loadImage(GlideRequests glideRequests, String url, ImageView imageView) {
-        loadImage(glideRequests, url, imageView, DiskCacheStrategy.ALL);
+        loadImage(glideRequests, url, imageView, DiskCacheStrategy.AUTOMATIC);
     }
 
     public static void loadImage(GlideRequests glideRequests, String url, ImageView imageView, DiskCacheStrategy diskCacheStrategy) {
@@ -64,7 +66,7 @@ public class ImageUtil {
         glideRequests.load(url)
                 .error(R.drawable.ic_stub)
                 .listener(listener)
-                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(imageView);
     }
 
@@ -73,7 +75,7 @@ public class ImageUtil {
         glideRequests.load(url)
                 .centerCrop()
                 .override(width, height)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .error(R.drawable.ic_stub)
                 .into(imageView);
     }
@@ -83,7 +85,7 @@ public class ImageUtil {
         glideRequests.load(imageStorageRef)
                 .centerCrop()
                 .override(width, height)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .error(R.drawable.ic_stub)
                 .into(imageView);
     }
@@ -93,7 +95,7 @@ public class ImageUtil {
         glideRequests.load(imageStorageRef)
                 .centerCrop()
                 .override(width, height)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .error(R.drawable.ic_stub)
                 .listener(listener)
                 .into(imageView);
@@ -107,14 +109,25 @@ public class ImageUtil {
                                                  int height,
                                                  RequestListener<Drawable> listener) {
 
-        glideRequests.load(imageStorageRefMedium)
-                .centerCrop()
-                .override(width, height)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .error(R.drawable.ic_stub)
-                .listener(listener)
-                .error(glideRequests.load(imageStorageRefOriginal))
-                .into(imageView);
+        if (listener == null) {
+            glideRequests.load(imageStorageRefMedium)
+                    .centerCrop()
+                    .override(width, height)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .error(R.drawable.ic_stub)
+                    .error(glideRequests.load(imageStorageRefOriginal))
+                    .into(imageView);
+        } else {
+            glideRequests.load(imageStorageRefMedium)
+                    .centerCrop()
+                    .override(width, height)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .error(R.drawable.ic_stub)
+                    .listener(listener)
+                    .error(glideRequests.load(imageStorageRefOriginal))
+                    .into(imageView);
+        }
+
     }
 
     public static void loadImageCenterCrop(GlideRequests glideRequests, String url, ImageView imageView,
@@ -122,7 +135,7 @@ public class ImageUtil {
         glideRequests.load(url)
                 .centerCrop()
                 .override(width, height)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .error(R.drawable.ic_stub)
                 .listener(listener)
                 .into(imageView);
@@ -132,7 +145,7 @@ public class ImageUtil {
                                            RequestListener<Drawable> listener) {
         glideRequests.load(imageStorageRef)
                 .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .error(R.drawable.ic_stub)
                 .listener(listener)
                 .into(imageView);
@@ -142,7 +155,7 @@ public class ImageUtil {
                                            RequestListener<Drawable> listener) {
         glideRequests.load(url)
                 .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .error(R.drawable.ic_stub)
                 .listener(listener)
                 .into(imageView);
@@ -155,7 +168,7 @@ public class ImageUtil {
             return glideRequests.asBitmap()
                     .load(url)
                     .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .submit(width, height)
                     .get();
         } catch (Exception e) {
@@ -167,7 +180,7 @@ public class ImageUtil {
     public static void loadImageWithSimpleTarget(GlideRequests glideRequests, String url, SimpleTarget<Bitmap> simpleTarget) {
         glideRequests.asBitmap()
                 .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .fitCenter()
                 .into(simpleTarget);
     }
@@ -175,7 +188,7 @@ public class ImageUtil {
     public static void loadImageWithSimpleTarget(GlideRequests glideRequests, StorageReference imageStorageRef, SimpleTarget<Bitmap> simpleTarget) {
         glideRequests.asBitmap()
                 .load(imageStorageRef)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .fitCenter()
                 .into(simpleTarget);
     }

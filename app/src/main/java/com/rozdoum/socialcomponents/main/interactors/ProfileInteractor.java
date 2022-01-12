@@ -21,8 +21,8 @@ package com.rozdoum.socialcomponents.main.interactors;
 import android.content.Context;
 import android.net.Uri;
 
-import android.support.annotation.NonNull;
-import com.google.android.gms.tasks.OnCompleteListener;
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,7 +33,6 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.UploadTask;
 import com.rozdoum.socialcomponents.ApplicationHelper;
 import com.rozdoum.socialcomponents.enums.UploadImagePrefix;
@@ -45,6 +44,7 @@ import com.rozdoum.socialcomponents.managers.listeners.OnObjectExistListener;
 import com.rozdoum.socialcomponents.managers.listeners.OnProfileCreatedListener;
 import com.rozdoum.socialcomponents.model.Post;
 import com.rozdoum.socialcomponents.model.Profile;
+import com.rozdoum.socialcomponents.services.FirebaseInstanceId;
 import com.rozdoum.socialcomponents.utils.ImageUtil;
 import com.rozdoum.socialcomponents.utils.LogUtil;
 
@@ -90,7 +90,7 @@ public class ProfileInteractor {
     }
 
     public void createOrUpdateProfileWithImage(final Profile profile, Uri imageUri, final OnProfileCreatedListener onProfileCreatedListener) {
-        String imageTitle = ImageUtil.generateImageTitle(UploadImagePrefix.PROFILE, profile.getId());
+        String imageTitle = ImageUtil.generateImageTitle(UploadImagePrefix.PROFILE, profile.getId()) + ".png";
         UploadTask uploadTask = databaseHelper.uploadImage(imageUri, imageTitle);
 
         if (uploadTask != null) {
@@ -213,7 +213,7 @@ public class ProfileInteractor {
             getProfileSingleValue(currentUserId, new OnObjectChangedListenerSimple<Profile>() {
                 @Override
                 public void onObjectChanged(Profile obj) {
-                    if(obj != null) {
+                    if (obj != null) {
                         addRegistrationToken(token, currentUserId);
                     } else {
                         LogUtil.logError(TAG, "updateRegistrationToken",

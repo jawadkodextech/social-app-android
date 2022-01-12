@@ -19,9 +19,12 @@ package com.rozdoum.socialcomponents.managers;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.widget.ImageView;
+
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -164,24 +167,29 @@ public class PostManager extends FirebaseListenersManager {
 
         StorageReference mediumStorageRef = getMediumImageStorageRef(imageTitle);
         StorageReference originalStorageRef = getOriginImageStorageRef(imageTitle);
-
-        ImageUtil.loadMediumImageCenterCrop(request, mediumStorageRef, originalStorageRef, imageView, width, height, new RequestListener<Drawable>() {
-            @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                if (onImageRequestListener != null) {
-                    onImageRequestListener.onImageRequestFinished();
+//        ImageUtil.loadImageCe
+        if (onImageRequestListener == null) {
+            ImageUtil.loadMediumImageCenterCrop(request, mediumStorageRef, originalStorageRef, imageView, width, height, null);
+        } else {
+            ImageUtil.loadMediumImageCenterCrop(request, mediumStorageRef, originalStorageRef, imageView, width, height, new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    if (onImageRequestListener != null) {
+                        onImageRequestListener.onImageRequestFinished();
+                    }
+                    return false;
                 }
-                return false;
-            }
 
-            @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                if (onImageRequestListener != null) {
-                    onImageRequestListener.onImageRequestFinished();
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    if (onImageRequestListener != null) {
+                        onImageRequestListener.onImageRequestFinished();
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        }
+
 
     }
 

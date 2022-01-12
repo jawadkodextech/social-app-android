@@ -17,9 +17,19 @@
 
 package com.rozdoum.socialcomponents;
 
-import com.rozdoum.socialcomponents.managers.DatabaseHelper;
+import androidx.annotation.NonNull;
+import androidx.multidex.MultiDexApplication;
 
-public class Application extends android.app.Application {
+import com.facebook.FacebookSdk;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.rozdoum.socialcomponents.main.interactors.PostInteractor;
+import com.rozdoum.socialcomponents.main.interactors.ProfileInteractor;
+import com.rozdoum.socialcomponents.managers.DatabaseHelper;
+import com.rozdoum.socialcomponents.services.FirebaseInstanceId;
+
+public class Application extends MultiDexApplication {//android.app.Application
 
     public static final String TAG = Application.class.getSimpleName();
 
@@ -29,5 +39,27 @@ public class Application extends android.app.Application {
 
         ApplicationHelper.initDatabaseHelper(this);
         PostInteractor.getInstance(this).subscribeToNewPosts();
+//        AutoLogAppEventsEnabled
+        FacebookSdk.setAutoLogAppEventsEnabled(true);
+        FacebookSdk.setAdvertiserIDCollectionEnabled(true);
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+//                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        FirebaseInstanceId.getInstance().setToken(token);
+                        ProfileInteractor.getInstance(getApplicationContext()).updateRegistrationToken(token);
+                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, msg);
+//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

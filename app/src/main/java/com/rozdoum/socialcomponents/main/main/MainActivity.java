@@ -21,13 +21,13 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -47,6 +47,7 @@ import com.rozdoum.socialcomponents.main.profile.ProfileActivity;
 import com.rozdoum.socialcomponents.main.search.SearchActivity;
 import com.rozdoum.socialcomponents.model.Post;
 import com.rozdoum.socialcomponents.utils.AnimationUtils;
+import com.rozdoum.socialcomponents.utils.ImageExtensions;
 
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
 
@@ -59,11 +60,32 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeContainer;
 
+//    @SuppressLint("PackageManagerGetSignatures")
+//    @Suppress("DEPRECATION")
+//    private fun getKeyHash() {
+//        try {
+//            val info = requireActivity().packageManager.getPackageInfo(
+//                    requireActivity().packageName, PackageManager.GET_SIGNATURES
+//            )
+//            for (signature in info.signatures) {
+//                val md = MessageDigest.getInstance("SHA")
+//                md.update(signature.toByteArray())
+//                Log.i(
+//                        javaClass.name,
+//                        "YourKeyHash : " + Base64.encodeToString(md.digest(), Base64.DEFAULT)
+//                )
+//            }
+//        } catch (e: PackageManager.NameNotFoundException) {
+//            e.printStackTrace()
+//        } catch (e: NoSuchAlgorithmException) {
+//            e.printStackTrace()
+//        }
+//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ImageExtensions.INSTANCE.getKeyHash(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
